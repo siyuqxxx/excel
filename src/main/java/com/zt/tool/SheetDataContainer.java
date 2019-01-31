@@ -8,7 +8,7 @@ public class SheetDataContainer<T> {
     private String SheetName = "";
     private List<String> headers = new LinkedList<>();
     private List<T> data = new LinkedList<>();
-    private IDataWriter<T> writer;
+    private List<IColumnWriter<T>> columnWriter = new LinkedList<>();
 
     public SheetDataContainer<T> addHead(String h) {
         if (Objects.nonNull(h) && !h.trim().isEmpty() && !this.headers.contains(h)) {
@@ -17,13 +17,12 @@ public class SheetDataContainer<T> {
         return this;
     }
 
-    public String getSheetName() {
-        return SheetName;
+    String getSheetName() {
+        return this.SheetName;
     }
 
-    public SheetDataContainer<T> setSheetName(String sheetName) {
+    public void setSheetName(String sheetName) {
         SheetName = sheetName;
-        return this;
     }
 
     public List<String> getHeaders() {
@@ -50,13 +49,14 @@ public class SheetDataContainer<T> {
         return this;
     }
 
-    public IDataWriter<T> getWriter() {
-        return Objects.nonNull(this.writer) ? this.writer : ((sheet, row, been) -> {});
+    List<IColumnWriter<T>> getColumnWriter() {
+        return columnWriter;
     }
 
-    public SheetDataContainer<T> setWriter(IDataWriter<T> writer) {
-        this.writer = writer;
-        return this;
+    public void addColumnWriter(IColumnWriter<T> writer) {
+        if (Objects.nonNull(writer)) {
+            this.columnWriter.add(writer);
+        }
     }
 
     @Override
@@ -65,7 +65,6 @@ public class SheetDataContainer<T> {
                 "SheetName='" + SheetName + '\'' +
                 ", headers=" + headers +
                 ", data=" + data +
-                ", writer=" + writer +
                 '}';
     }
 }

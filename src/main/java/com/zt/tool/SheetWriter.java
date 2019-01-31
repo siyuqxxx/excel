@@ -19,7 +19,7 @@ public class SheetWriter<T> {
         return this;
     }
 
-    public void preform(WritableWorkbook book, int sheet_index) throws WriteExcelException {
+    void preform(WritableWorkbook book, int sheet_index) throws WriteExcelException {
         boolean hasError = false;
         StringBuilder errMsg = new StringBuilder("\"worksheet\":{");
         WritableSheet sheet = book.createSheet(this.data.getSheetName(), sheet_index);
@@ -53,7 +53,11 @@ public class SheetWriter<T> {
         for (T b : this.data.getData()) {
             row++;
             try {
-                this.data.getWriter().preform(sheet, row, b);
+                int column = 0;
+                for (IColumnWriter<T> columnWriter : this.data.getColumnWriter()) {
+                    sheet.addCell(new Label(column, row, columnWriter.preform(b)));
+                    column++;
+                }
             } catch (WriteException e) {
                 errMsg.append(String.format("{\"row\":%d, \"value\":\"%s\"}, ", row, b));
                 hasError = true;

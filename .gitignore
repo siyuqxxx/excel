@@ -1,0 +1,10 @@
+# ignore .idea file
+.idea
+*.iml
+
+# ignore maven file
+target
+release.properties
+
+# ignore logs
+logs

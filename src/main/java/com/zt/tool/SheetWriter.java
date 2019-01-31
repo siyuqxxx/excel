@@ -22,6 +22,11 @@ public class SheetWriter<T> {
         return this;
     }
 
+    public SheetWriter<T> setType(Class<T> type) {
+        this.data.setType(type);
+        return this;
+    }
+
     void preform(WritableWorkbook book, int sheet_index) throws WriteExcelException {
         boolean hasError = false;
         StringBuilder errMsg = new StringBuilder("\"worksheet\":{");

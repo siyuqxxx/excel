@@ -21,5 +21,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ToExcel {
     String columnName() default "";
-    int columnIndex() default 0;
+    int columnIndex() default 1;
 }

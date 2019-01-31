@@ -1,5 +1,6 @@
 package com.zt.tool;
 
+import com.zt.tool.annotation.ToExcelParser;
 import com.zt.tool.exception.WriteExcelException;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -7,15 +8,17 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SheetWriter<T> {
-    private SheetDataContainer<T> data = null;
+    private SheetDataContainer<T> data = new SheetDataContainer<>();
 
-    public SheetWriter<T> addData(SheetDataContainer<T> data) {
-        if (Objects.nonNull(data)) {
-            this.data = data;
-        }
+    public SheetWriter<T> setSheetName(String name) {
+        this.data.setSheetName(name);
+        return this;
+    }
+
+    public SheetWriter<T> setSheetData(List<T> data) {
+        this.data.setData(data);
         return this;
     }
 
@@ -27,7 +30,7 @@ public class SheetWriter<T> {
         // 设置表头
         int row = 0;
         try {
-            writerHeader(sheet, row, this.data.getHeaders());
+            writerHeader(sheet, row, ToExcelParser.getHeader(this.data.getEntityClass()));
         } catch (WriteExcelException e) {
             errMsg.append(String.format("{\"head\":[%s], ", e.getMessage()));
             hasError = true;
@@ -50,16 +53,16 @@ public class SheetWriter<T> {
     private void writeData(WritableSheet sheet, int row) throws WriteExcelException {
         boolean hasError = false;
         StringBuilder errMsg = new StringBuilder();
-        for (T b : this.data.getData()) {
+        for (T rowBean : this.data.getData()) {
             row++;
             try {
                 int column = 0;
-                for (IColumnWriter<T> columnWriter : this.data.getColumnWriter()) {
-                    sheet.addCell(new Label(column, row, columnWriter.preform(b)));
+                for (String value : ToExcelParser.getRowData(rowBean)) {
+                    sheet.addCell(new Label(column, row, value));
                     column++;
                 }
             } catch (WriteException e) {
-                errMsg.append(String.format("{\"row\":%d, \"value\":\"%s\"}, ", row, b));
+                errMsg.append(String.format("{\"row\":%d, \"value\":\"%s\"}, ", row, rowBean));
                 hasError = true;
             }
         }

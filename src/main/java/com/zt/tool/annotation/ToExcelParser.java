@@ -29,7 +29,7 @@ public class ToExcelParser {
     }
 
     private static List<Method> getMethodInDeclaringClassAndStartWithGet(Class<?> clazz) {
-        return Arrays.stream(clazz.getMethods())
+        return Arrays.stream(Optional.ofNullable(clazz).map(Class::getMethods).orElse(new Method[0]))
                 .filter(m -> m.getDeclaringClass().equals(clazz))
                 .filter(m -> m.getReturnType().equals(String.class))
                 .filter(m -> m.getName().startsWith(METHOD_PREFIX))

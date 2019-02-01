@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,11 +18,7 @@ public class AppTest {
         ArrayList<Product> data = new ArrayList<>();
         data.add(new Product().setName("PC").setDescription("personal computer").setPrice("3999.00"));
 
-
-        List<SheetWriter> writers = new LinkedList<>();
-        writers.add(new SheetWriter<Product>().setSheetName("data list").setSheetData(data));
-
-
+        List<SheetWriter> writers = Collections.singletonList(new SheetWriter<Product>().setSheetName("data list").setType(Product.class));
 
         boolean success = write(writers, this.file);
         assertTrue(success);
@@ -32,9 +26,7 @@ public class AppTest {
 
     @Test
     public void emptyDataList2excel() {
-        List<SheetWriter> writers = new LinkedList<>();
-        writers.add(new SheetWriter<Product>().setSheetName("data list").setSheetData(new ArrayList<>()));
-
+        List<SheetWriter> writers = Collections.singletonList(new SheetWriter<Product>().setSheetName("data list").setType(Product.class));
 
         boolean success = write(writers, this.file);
         assertTrue(success);
@@ -51,5 +43,13 @@ public class AppTest {
             return false;
         }
         return true;
+    }
+
+    @Test
+    public void tableHeader2excel() {
+        List<SheetWriter> writers = Collections.singletonList(new SheetWriter<Product>().setSheetName("data list").setType(Product.class));
+
+        boolean success = write(writers, this.file);
+        assertTrue(success);
     }
 }

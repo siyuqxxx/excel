@@ -1,6 +1,5 @@
 package com.zt.tool;
 
-import jxl.write.Label;
 import org.junit.Test;
 
 import java.io.File;
@@ -22,18 +21,16 @@ public class AppTest {
         SheetDataContainer<Product> container = new SheetDataContainer<>();
         container.setSheetName("data list");
         container.addHead("产品名称").addHead("产品描述").addHead("单价");
-        container.setWriter(((sheet, row, been) -> {
-            sheet.addCell(new Label(0, row, been.getName()));
-            sheet.addCell(new Label(0, row, been.getDescription()));
-            sheet.addCell(new Label(0, row, been.getPrice()));
-        }));
+        container.addColumnWriter(Product::getName);
+        container.addColumnWriter(Product::getDescription);
+        container.addColumnWriter(Product::getPrice);
         container.setData(data);
 
         List<SheetWriter> writers = new LinkedList<>();
         writers.add(new SheetWriter<Product>().addData(container));
 
         File file = new File("C:\\Users\\think\\Desktop\\test.xls");
-        try (FileOutputStream stream = new FileOutputStream(file)) {
+        try (FileOutputStream stream = new FileOutputStream(file);) {
             new ExcelHelper().writeWorkBook(stream, writers);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

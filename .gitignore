@@ -5,6 +5,7 @@
 # ignore maven file
 target
 release.properties
+*.releaseBackup
 
 # ignore logs
 logs

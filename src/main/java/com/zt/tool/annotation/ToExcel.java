@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
  *
  * 通过 columnName 指定导出的数据表的表头名称；如果不指定，自动去掉方法名中的 get 前缀 做为表头
  * 通过 columnIndex 指定导出的数据表各列的顺序； 排序优先级 1. index 2. 方法名字符串排序
+ * 支持标识哪些列是必须的
  *
  * 注意：
  * 此注解不可作用于父类
@@ -22,4 +23,5 @@ import java.lang.annotation.Target;
 public @interface ToExcel {
     String columnName() default "";
     int columnIndex() default 1;
+    boolean required() default false;
 }

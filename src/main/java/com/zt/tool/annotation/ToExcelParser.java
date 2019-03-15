@@ -7,10 +7,14 @@ import java.util.stream.Collectors;
 
 public class ToExcelParser {
     private static final String METHOD_PREFIX = "get";
+    private static final String STR_REQUIRED = " (必填)";
 
     public static List<String> getHeader(Class<?> clazz) {
         return getMethodInDeclaringClassAndStartWithGet(clazz).stream()
-                .map(m -> new Header().setMethodName(m.getName()).setHeader(m.getAnnotation(ToExcel.class).columnName()))
+                .map(m -> new Header()
+                        .setMethodName(m.getName())
+                        .setHeader(m.getAnnotation(ToExcel.class).columnName())
+                        .setRequired(m.getAnnotation(ToExcel.class).required()))
                 .map(Header::getHeader).collect(Collectors.toList());
     }
 
@@ -33,12 +37,14 @@ public class ToExcelParser {
                 .filter(m -> m.getDeclaringClass().equals(clazz))
                 .filter(m -> m.getReturnType().equals(String.class))
                 .filter(m -> m.getName().startsWith(METHOD_PREFIX))
-                .sorted(new MethodSorter()).collect(Collectors.toList());
+                .sorted(new MethodSorter())
+                .collect(Collectors.toList());
     }
 
     private static class Header {
         private String methodName = "";
         private String header = "";
+        private boolean required = false;
 
         public Header setMethodName(String methodName) {
             this.methodName = methodName;
@@ -49,11 +55,19 @@ public class ToExcelParser {
             if (this.header.trim().isEmpty()) {
                 return this.methodName.substring(METHOD_PREFIX.length());
             }
+            if (required) {
+                return header + STR_REQUIRED;
+            }
             return header;
         }
 
         public Header setHeader(String header) {
             this.header = header;
+            return this;
+        }
+
+        public Header setRequired(boolean required) {
+            this.required = required;
             return this;
         }
     }

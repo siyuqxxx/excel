@@ -134,11 +134,11 @@ public class ExcelHelper {
             return false;
         if (listA.size() != listB.size())
             return false;
-        for (Object o : listA) {
+        for (T o : listA) {
             if (!listB.contains(o))
                 return false;
         }
-        for (Object o : listB) {
+        for (T o : listB) {
             if (!listA.contains(o))
                 return false;
         }

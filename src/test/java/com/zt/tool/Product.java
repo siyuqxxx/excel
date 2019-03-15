@@ -7,7 +7,7 @@ public class Product {
     private String description = "";
     private String price = "";
 
-    @ToExcel(columnName = "产品名称", columnIndex = 1)
+    @ToExcel(columnName = "产品名称", columnIndex = 1, required = true)
     public String getName() {
         return name;
     }

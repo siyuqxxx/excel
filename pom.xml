@@ -20,7 +20,7 @@
     <repository>
       <id>zt</id>
       <name>Zhang Tu Repository</name>
-      <url>http://192.168.0.235:8081/repository/maven-public/</url>
+      <url>http://172.17.0.6:8081/repository/maven-public/</url>
       <releases><enabled>true</enabled></releases>
       <snapshots><enabled>true</enabled></snapshots>
       <layout>default</layout>

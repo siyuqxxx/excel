@@ -28,14 +28,14 @@
     </repository>
   </repositories>
   <pluginRepositories>
-    <pluginRepositorie>
+    <pluginRepository>
       <id>pr</id>
       <name>Private Repository</name>
       <url>${private.repository}</url>
       <releases><enabled>true</enabled></releases>
       <snapshots><enabled>true</enabled></snapshots>
       <layout>default</layout>
-    </pluginRepositorie>
+    </pluginRepository>
   </pluginRepositories>
 
   <scm>

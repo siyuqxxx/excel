@@ -93,7 +93,7 @@ public class ExcelHelper {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (!checkTableHead(rs)) {
+            if (!checkTableHead(null)) {
                 return "模板格式错误，请重新下载模板！";
             }
 
